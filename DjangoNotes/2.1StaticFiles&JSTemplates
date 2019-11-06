@@ -1,0 +1,49 @@
+go to settings.py 
+
+CDN server is used in prod.
+here its locally. for CDN server go to MANAGING STATIC FILES in django doc
+
+create : (trydjango/static_cdn_test/static & trydjango/static_cdn_test/media)
+
+
+add to settings.py 
+
+LOCAL_STATIC_CDN_PATH = os.path.join(os.path.dirname(BASE_DIR), 'static_cdn_test')
+STATIC_ROOT = os.path.join(LOCAL_STATIC_CDN_PATH, 'static')  #live CDN AWS , GOogle C.
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'staticfiles')
+]
+
+MEDIA_ROOT = os.path.join(LOCAL_STATIC_CDN_PATH, 'media')
+MEDIA_URL = '/media/'
+
+inside src folder create folder staticfiles
+
+
+go to models.py and add (if imagefield is needed --> pip install pillow): 
+image = models.FileField(upload_to='image/', blank=True, null=True)
+...runmigrations
+
+add to the view: 
+form = BlogPostModelForm(request.POST or None, request.FILES or None)
+
+add to the form.html:
+<form method="POST" action='' enctype='multipart/form-data'>
+
+add to the detail.html(to display the image ) : 
+
+        {% if blog_post.image %}
+            <img src="{{ blog_post.image.url }}" class='card-img-top'/>
+        {% endif %}
+
+
+python manage.py collectstatic will download all static files to static folder  
+
+
+
+to see the images add to URLs.py : 
+
+if settings.DEBUG:
+    from django.conf.urls.static import static
+    urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

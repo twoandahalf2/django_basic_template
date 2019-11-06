@@ -1,0 +1,31 @@
+1. create base.html in templates folder 
+
+
+2. add this to the base HTML:
+<!DOCTYPE html>
+<html>
+<head>
+	<title>BasE_HTML</title>
+</head>
+<body>
+{% block content %}{% endblock content %}
+</body>
+</html>
+
+3. modify the home.html : 
+{% extends 'base.html' %}
+{% block content %}
+	<h1>hello world</h1>
+	<p> this is a template </p>
+{% endblock %}
+
+{% block content2 %}
+	<h1>hello world2</h1>
+	<p> this is a template2 </p>
+{% endblock content2 %}
+
+4. include another html doc to separate them..THIS IS COOL
+{% include 'navbar.html' %}
+
+
+

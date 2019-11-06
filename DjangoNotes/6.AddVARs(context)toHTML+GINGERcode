@@ -1,0 +1,32 @@
+CONTEXT princip and Ginger Syntax
+
+1. logic is : we pass context variables to the function: 
+
+def about_view(request, *args, **kwargs):
+	context = {
+		"my_text" : "This is about me!",
+		"my_number" : 123,
+		"my_list": [1, 2, 'asv', 54]
+	}
+
+	return render(request, "about.html", context)
+
+2. by passing context variables--> {{ my_text }}, {{ my_number }} we present this
+info from the DB in the HTML
+
+3. to pass a list we do this : 
+
+<ul> 
+{% for my_sub_item in my_list %} 
+	{% if my_sub_item == 1 %}
+		<li> {{ my_sub_item }} </li>
+	{% elif my_sub_item == "asv" %}
+		<li>{{ my_sub_item }} </li>
+	{% else %}
+		<li>{{ my_sub_item|add:2222 }}</li>
+	{% endif %}
+
+{%endfor%}
+</ul>
+###{{ forloop.counter }} - {{ my_sub_item }}
+

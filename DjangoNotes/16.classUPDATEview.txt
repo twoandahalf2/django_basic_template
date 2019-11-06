@@ -1,0 +1,21 @@
+
+1. go to views.py and create class  : 
+
+class ArticleUpdateView(UpdateView):
+	form_class = ArticleModelForm
+	template_name = 'articles/article_create.html'
+	queryset = Article.objects.all()
+
+	def get_object(self):
+		id_ = self.kwargs.get('id')
+		return get_object_or_404(Article, id=id_)
+
+	###this prints the clean user data
+	def form_valid(self, form):
+		print(form.cleaned_data)
+		return super().form_valid(form)
+
+2. go to url.py and import the view ArticleUpdateView
+
+
+path('<int:id>/update/', ArticleUpdateView.as_view(), name='article-update'),

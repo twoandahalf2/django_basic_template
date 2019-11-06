@@ -1,0 +1,52 @@
+Dynamic URLs:
+
+1. add the function in views:
+from django.shortcuts import render, get_object_or_404
+from .forms import ProductForm, RawProductForm
+from .models import Product
+
+def dynamic_lookup_view(request, id):
+	# obj = Product.objects.get(id=id)
+	obj = get_object_or_404(Product, id=id)
+	context= {
+		'object' : obj 
+	}
+	return render(request, "products/product_detail.html", context)
+
+#get_object_or_404 is used to handle errors when there is no such product ID
+
+2. create the html template : 
+{% extends 'base.html' %}
+
+{% block content %}
+<p>{{ object.title }}</p>
+<p>{{ object.description }}</p>
+<p>{{ object.price }}</p>
+{% endblock content%}
+
+3. Check the Product class in models.py
+
+from django.db import models
+
+class Product(models.Model):
+	title = models.CharField(max_length=120)
+	description	= models.TextField(blank=True, null=True)
+	price = models.DecimalField(decimal_places=2, max_digits=100)
+	summary = models.TextField(default='cool!')
+	featured = models.BooleanField(default=False)
+
+4. add to the urls.py
+import the view
+
+    path('products/<int:id>/', dynamic_lookup_view, name='product'),
+  or
+  	path('products/<str:name>/', dynamic_lookup_view, name='product'),
+  or ... slug
+
+5. id --> comes from dynamic lookup function. we declare it there and passing it make the url 
+dynamic
+
+
+
+
+

@@ -1,0 +1,46 @@
+https://www.youtube.com/watch?v=F5mRW0jo-U4
+
+
+
+1. mkdir TryDjango
+
+
+virtualenv -p python3 env
+source env/bin/activate
+pip install Django
+
+
+5.pip freeze
+6. pip install django
+7. pip freeze
+8. django-admin
+9. mkdir src --> cd src
+10. django-admin startproject trydjango .
+11. python manage.py runserver (sudo fuser -k 8000/tcp ) if port is in use
+12. python manage.py migrate
+13. python manage.py createsuperuser
+14. python manage.py startapp products
+15. python manage.py makemigrations
+16. python manage.py migrate
+17. everytime we change manage.py , we have to run makemigration and migrate ! 
+18. add the products app to installed applications in settings.py
+
+
+19 UPDATE TEMPLATES LOCATION IN SETTINGS.PY
+'DIRS': [os.path.join(BASE_DIR, 'templates')],
+
+and create templates and static folders inside src
+
+VSCODE
+
+Go to File > preferences > Settings.
+Click on Workspace settings.
+Under Files:Association, you will find Edit in settings.json , click on that.
+Update "python.pythonPath": "Your_venv_path/bin/python" under workspace settings.
+(For Windows): Update "python.pythonPath": "Your_venv_path/Scripts/python.exe" under workspace settings.
+
+enable virtual env
+
+{
+    "python.pythonPath": "/home/vladi/DevProjects/Django_ecom_template/env/bin/python"
+}

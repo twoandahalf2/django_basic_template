@@ -1,0 +1,7 @@
+1. python manage.py shell
+2. from products.models import Product
+3. obj = Product.objects.get(id=1)
+4. dir(obj)
+5. obj.title
+6. allobjs= Product.objects.all()
+7.Product.objects.create()

@@ -1,0 +1,90 @@
+create new application... or not
+
+python manage.py startapp blog
+add the app to settings.py - installed apps
+
+1. add this to blog.views.py:
+
+from django.shortcuts import render
+
+from django.views.generic import (
+	CreateView,
+	DetailView,
+	ListView,
+	UpdateView,
+	DeleteView,
+	)
+
+from .models import Article
+
+class ArticleListView(ListView):
+	template_name = 'articles/article_list.html'
+	queryset = Article.objects.all()
+	
+
+!!! by default application is looking for the views in path #blog/<modelname>_list.html
+
+2. create article_detail.html and article_list.html inside blog.templates.articles
+
+copy this to acticle_list.html:
+{% extends 'base.html' %}
+{% block content %}
+
+<!-- <h2>{{ object_list }}</h2> -->
+{% for instance in object_list %}
+
+<h5>{{ instance.id }} -<a href="{{ instance.get_absolute_url }}"> 
+{{ instance.title }} - {{ instance.summary }}</h5>
+{% endfor %}
+{% endblock content %}
+
+3. add this to blogs.urls.py
+from django.urls import path
+from .views import ArticleListView
+
+
+app_name = 'articles'
+
+urlpatterns = [
+	path('', ArticleListView.as_view(), name='article-list'),
+
+]
+
+4. go to src.urls.py and add : 
+
+path('blog/', include('blog.urls')),
+
+5. create models inside blog.models.py
+
+from django.db import models
+from django.urls import reverse
+
+# Create your models here.
+class Article(models.Model):
+	title = models.CharField(max_length=120)
+	description	= models.TextField(blank=True, null=True)
+	price = models.DecimalField(decimal_places=2, max_digits=100)
+	summary = models.TextField(default='Blogsarecool')
+	featured = models.BooleanField(default=False)
+
+6. in admin.py add : 
+from django.contrib import admin
+
+from .models import Article
+
+# Register your models here.
+
+admin.site.register(Article)
+
+
+7. run makemigrations --> migrate
+
+
+
+
+
+
+
+
+
+

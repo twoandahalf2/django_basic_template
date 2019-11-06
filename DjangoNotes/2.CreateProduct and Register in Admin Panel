@@ -1,0 +1,34 @@
+After initial setup , we should have one application , django started 
+
+In Settings.py edit Installed Apps,  
+Set up the products app to app that will store data:
+
+1. in products.models create a class to be mapped to the DB
+
+from django.db import models
+
+
+class Product(models.Model):
+	title 			= models.CharField(max_length=120) 
+	description 	= models.TextField(blank=True, null=True)
+	#this is how you make it -> not required
+	price 			= models.DecimalField(decimal_places=2, max_digits=1000)
+	summary			= models.TextField(default='this is cool!')
+	featured 		= models.BooleanField(default=True)
+
+
+#find all fields in the documentation
+
+2. run python manage.py makemigrations --> migrate
+
+3. we have to open products.admin.py and import the product to register it
+This displays the products app in the admin console
+
+from django.contrib import admin
+from .models import Product
+
+admin.site.register(Product)
+
+
+4. If you create a model and add more fields to it later, make sure you specify default
+5. check the DATABASE-SHELL file now ! 

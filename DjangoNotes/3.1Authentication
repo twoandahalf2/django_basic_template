@@ -1,0 +1,35 @@
+
+This is what we use:
+
+https://django-allauth.readthedocs.io/en/latest/installation.html
+
+pip install django-allauth
+
+COPY to settings.py:
+
+2. AUTHENTICATION_BACKENDS = (
+    'django.contrib.auth.backends.ModelBackend',
+    'allauth.account.auth_backends.AuthenticationBackend',
+)
+
+3. INSTALLED APPS ; also check out the providerS: 
+
+....[
+
+    'django.contrib.auth',
+    'django.contrib.messages',
+    'django.contrib.sites',
+
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+
+]
+
+SITE_ID = 1
+
+4. add to main urls.py
+	
+path('accounts/', include('allauth.urls')),
+
+5. migrate and goto /accounts/login --> users can now authenticate. 

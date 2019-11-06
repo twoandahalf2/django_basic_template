@@ -1,0 +1,79 @@
+#####we need a form for create views ! 
+
+1. to have a create or update view we need a model form 
+
+so create forms.py file and add :
+from django import forms
+from .models import Article
+
+
+class ArtcileModelForm(forms.ModelForm):
+	class Meta:
+		model = Article
+		fields = [
+			'title',
+			'summary',
+			'price',
+		]
+
+2. Go to views.py and import the form and add a class
+
+from.forms import ArticleModelForm
+class ArticleCreateView(CreateView):
+	template_name = 'articles/article_create.html'
+	queryset = Article.objects.all() #blog/<modelname>_list.html
+
+
+3. Create also the html
+{% extends 'base.html' %}
+{% block content %}
+<form action= '.' method="POST"> {% csrf_token %}
+	{{ form.as_p }}
+	<input type="submit" name="Submit" value='Save Me!'/>
+</form>
+{% endblock content%}
+
+4. import the view in urls.py and 
+
+path('create/', ArticleCreateView.as_view(), name='article-create'),
+
+5. in views.py change the class 
+
+class ArticleCreateView(CreateView):
+	form_class = ArticleModelForm
+	template_name = 'articles/article_create.html'
+	queryset = Article.objects.all() #blog/<modelname>_list.html
+
+	###this prints the clean user data
+	def form_valid(self, form):
+		print(form.cleaned_data)
+		return super().form_valid(form)
+
+
+6. add reverse function in models.py 
+
+from django.db import models
+from django.urls import reverse
+
+# Create your models here.
+class Article(models.Model):
+	title = models.CharField(max_length=120)
+	description	= models.TextField(blank=True, null=True)
+	price = models.DecimalField(decimal_places=2, max_digits=100)
+	summary = models.TextField(default='Blogsarecool')
+	featured = models.BooleanField(default=False)
+
+
+	def get_absolute_url(self):
+		#articles comes from app name
+		return reverse("articles:article-detail", kwargs={'id': self.id})
+
+####fix the integrity error by creating:
+
+def get_success_url(self):
+        return '/'
+
+in the class view! 
+
+
+in urls.py appname has to be == articles...

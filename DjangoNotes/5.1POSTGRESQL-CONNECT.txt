@@ -1,0 +1,63 @@
+1. use the notes on how to setup postgresql in templates--> postgresql.
+
+2. go to django settings.py to DATABASES
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'my_django_db',
+        'USER' : 'vladi',
+        'PASSWORD': '$',
+        'HOST': '34.89.213.221',
+        'PORT': '',
+    }
+}
+
+or to connect to local DB :
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'my_django_db',
+        'USER': 'postgres',
+        'PASSWORD': '$',
+        'HOST': 'localhost',
+        'PORT': '',
+    }
+}
+
+
+also go to pgadmin to create the databse ! 
+
+
+3. go to terminal and run: 
+
+sudo apt-get install postgresql
+sudo apt-get install python-psycopg2
+sudo apt-get install libpq-dev
+
+pip install psycopg2
+
+4. if you created POSTGRESQL instance in Google Cloud : 
+
+connect to the instance from gcloud shell and run:
+
+CREATE DATABASE vk_django_db;
+CREATE USER vladi WITH PASSWORD '$';
+ALTER ROLE vladi SET client_encoding TO 'utf8';
+GRANT ALL PRIVILEGES ON DATABASE vk_django_db TO vladi;
+
+
+
+
+5. python manage.py migrate , makemigrations
+
+
+
+6. to create a new table, just go to models.py 
+and create a model : 
+
+class MySimpleModel(models.Model):
+    col= models.CharField(max_length= 10)
+
+

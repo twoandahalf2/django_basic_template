@@ -1,0 +1,106 @@
+CREATE FORMS for the users to add data to the SQL
+
+
+1. Create forms.py file in products folder and add there modelforms, validations etc:
+Class Meta is inheriting seetings from django, 
+def clean_{fieldname} is used for validation of field input,
+forms are used to add configs to the HTML,
+always make sure fields are consistent with models.py!
+
+
+from django import forms
+from .models import Product
+
+class ProductForm(forms.ModelForm):
+	title = forms.CharField(label='', widget=forms.TextInput(attrs={
+		"placeholder" : "Yo!"
+		}))
+	email = forms.EmailField()
+	description = forms.CharField(required=False, widget=forms.Textarea(attrs={
+		"class": "new-class-name two",
+		"rows" : 20,
+		"cols": 120,
+		"id" : "my-id-for-text-area",
+		}))
+	price = forms.DecimalField(initial=100.09)
+	class Meta:
+		model = Product
+		fields = [
+			'title',
+			'description',
+			'price',
+		]
+
+	def clean_title(self, *args, **kwargs):
+		title = self.cleaned_data.get("title")
+		if "CFE" in title:
+			return title
+		else:
+			raise forms.ValidationError("this is not valid title")
+
+######def clean<field_name> is used add more validation
+
+
+	def clean_email(self, *args, **kwargs):
+		email = self.cleaned_data.get('email')
+		if not email.endswith("edu"):
+			raise forms.ValidationError('This email is not valid')
+		else:
+			return email
+
+
+class RawProductForm(forms.Form):
+	title = forms.CharField(label='', widget=forms.TextInput(attrs={
+		"placeholder" : "Yo!"
+		}))
+	description = forms.CharField(required=False, widget=forms.Textarea(attrs={
+		"class": "new-class-name two",
+		"rows" : 20,
+		"cols": 120,
+		"id" : "my-id-for-text-area",
+		}))
+	price = forms.DecimalField(initial=100.09)
+
+
+2. make sure you import the new forms file to the views:
+from .forms import ProductForm, RawProductForm
+
+
+ 
+3.In products.views.py create a new function:
+
+
+def product_create_view(request, *args, **kwargs ):
+	form = ProductForm(request.POST or None)
+	if form.is_valid():
+		form.save()
+		form = ProductForm()
+	context = {
+		'form': form
+	}
+	return render(request, "products/product_create.html",
+	 context)
+
+4. add the HTML to products/templates/products
+
+{% extends 'base.html' %}
+{% block content %}
+<form action= '.' method="POST"> {% csrf_token %}
+	{{ form.as_p }}
+	<input type="submit" name="Submit" value='Save Me!'/>
+</form>
+{% endblock content%}
+
+
+
+### form action= '/search/' --> means that you can send the request to another url 
+
+8. go to urls now to add the path there
+from products.views import product_create_view, product_detail_view
+path('product/', product_detail_view),
+9. Use the context dictionary to present in the HTML
+10. With post method we can see in the logs 
+
+
+
+

@@ -1,0 +1,57 @@
+
+1. python manage.py startapp pages
+and add it to installed apps
+
+2. .pages.views --> the place to handle various web pages
+
+from django.http import HttpResponse
+from django.shortcuts import render
+
+
+
+# Create your function based views here.
+
+def home_view(request, *args, **kwargs):
+	return render(request, "home.html", {})
+
+def contacts_view(request, *args, **kwargs):
+	return render(request, "contacts.html", {})
+
+def about_view(request, *args, **kwargs):
+	context = {
+		"my_text" : "This is about me!",
+		"my_number" : 123,
+		"my_list": [1, 2, 'asv', 54]
+	}
+
+	return render(request, "about.html", context)
+
+
+
+3. update urls.py 
+
+from django.contrib import admin
+from django.urls import path
+
+from pages.views import home_view, contacts_view, about_view
+#from products.views import product_detail_view
+
+urlpatterns = [
+    path('', home_view, name='home'),
+    path('home/', home_view, name='home'),
+    path('contacts/', contacts_view, name='contacts'),
+    path('about/', about_view, name='about'),
+    #path('product/', product_detail_view, name='product'),
+    path('admin/', admin.site.urls),
+]
+
+
+
+4. HTML TEMPLATES
+Create a folder templates inside src/root folder
+inside templates folder create home.html and others
+in settings.py edit the DIRS var in TEMPLATES to:
+'DIRS': [os.path.join(BASE_DIR, 'templates')],
+
+next:basehtml
+

@@ -1,0 +1,36 @@
+
+1.inside models.py file create a new function : 
+
+	def get_absolute_url(self):
+		return f'/product/{self.id}'
+
+##this will grab and dynamically assign the product URL 
+
+
+2. go to product_list.html and add the following:
+
+{% extends 'base.html' %}
+{% block content %}
+
+<!-- <h2>{{ object_list }}</h2> -->
+{% for instance in object_list %}
+
+<h5>{{ instance.id }} - <a href="{{ instance.get_absolute_url }}"> {{ instance.title }} - {{ instance.summary }}</h5>
+{% endfor %}
+{% endblock content %}
+
+
+###for reverse we need the URL names in URLs.py
+3. REVERSE --> Using the names of the urls : 
+
+from django.urls import reverse
+
+	def get_absolute_url(self):
+		return reverse("url-name", kwargs={'id': self.id})
+		# return f'/product/{self.id}'
+
+
+###this is very important !
+it is supposed to make the URL paths dynamic and whenever we click on a product(SQL Object) we automaticaly 
+get the link to open it.
+

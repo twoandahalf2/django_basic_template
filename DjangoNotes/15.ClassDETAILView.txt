@@ -1,0 +1,41 @@
+1. add the class to the views.py file in the app 
+
+class ArticleDetailView(DetailView):
+	template_name = 'articles/article_detail.html'
+	queryset = Article.objects.all() #blog/<modelname>_list.html
+
+
+2. create the html = article_detail.html
+
+{% extends 'base.html' %}
+{% block content %}
+<h1>Article Detail: {{ object.title }}</h1>
+
+<p></p>
+<p>{% if object.description != None and object.description != '' %} {{ object.description }}
+{% else %} Description is still not in the DB :)) {% endif %}
+</p>
+
+<p>{{ object.summary }}</p>
+<p>{{ object.price }}</p>
+{% endblock content %}
+
+3. inside urls.py file of the app 
+
+from .views import ArticleListView, ArticleDetailView
+
+path('<int:id>/', ArticleDetailView.as_view(), name='article-detail'),
+
+
+
+4. import get_object_or_404 to views.py and add the function:
+
+class ArticleDetailView(DetailView):
+	template_name = 'articles/article_detail.html'
+	queryset = Article.objects.all() #blog/<modelname>_list.html
+
+	def get_object(self):
+		pk_ = self.kwargs.get('pk')
+		return get_object_or_404(Article, pk=pk_)
+
+

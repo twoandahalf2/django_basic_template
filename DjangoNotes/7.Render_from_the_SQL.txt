@@ -1,0 +1,46 @@
+Connecting to database --> and viewing. 
+
+1. inside products.views create a view for the DB
+
+from django.shortcuts import render, get_object_or_404
+from .forms import ProductForm, RawProductForm
+from .models import Product
+
+
+def product_detail_view(request, *args, **kwargs ):
+	obj = Product.objects.get(id=1)
+	context = {
+		'object': obj
+	}
+	return render(request, "products/product_detail.html",
+	 context)
+
+
+now with object , you can access everything in the HTML
+
+2.inside products app create folder: product/templates/product/product_detail.html
+{% extends 'base.html' %}
+{% block content %}
+<h1>In app Template: {{ object.title }}</h1>
+
+<p></p>
+<p>{% if object.description != None and object.description != '' %} {{ object.description }}
+{% else %} Description is still not in the DB :)) {% endif %}
+</p>
+
+<p>{{ object.summary }}</p>
+<p>{{ object.price }}</p>
+{% endblock content %}
+
+3. in urls file --> create a new path
+from products.views import product_detail_view
+
+urlpatterns = [
+    path('product/' , product_detail_view),
+]
+
+4. If you get template not found errors , you can see whereit looks for a HTML template file
+
+
+
+

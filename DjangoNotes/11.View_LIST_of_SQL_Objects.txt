@@ -1,0 +1,38 @@
+to list our products we need to get a queryset first
+
+
+1. inside products/views.py create function : 
+
+def product_list_view(request):
+	queryset = Product.objects.all()
+	context = {
+		"object_list" : queryset
+	}
+	return render(request, 'products/product_list.html', context)
+
+
+2. create product_list.html 
+
+{% extends 'base.html' %}
+{% block content %}
+
+{% for instance in object_list %}
+
+<h5>{{ instance.id }} - {{ instance.title }} - {{ instance.summary }}</h5>
+{% endfor %}
+{% endblock content %}
+
+
+3. update urls.py
+import the view..
+add the url:
+
+    path('listproducts/', product_list_view, name='listproducts'),
+
+
+
+##################IF you have a DB 
+
+Django comes with a utility called inspectdb that can create models by introspecting an existing database. You can view the output by running this command:
+
+$ python manage.py inspectdb

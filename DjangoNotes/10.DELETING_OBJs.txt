@@ -1,0 +1,39 @@
+
+
+####to handle a missing object = get_object_or_404
+
+1. inside products.views.py create the following : 
+
+from django.shortcuts import render, get_object_or_404, redirect
+from .forms import ProductForm, RawProductForm
+from .models import Product
+
+def product_delete_view(request, id):
+	obj = get_object_or_404(Product, id=id)
+	if request.method == "POST":
+		#confirming delete
+		obj.detele()
+		return redirect('../../')
+	context = {
+		'object': obj
+	}
+	return render(request, 'products/product_delete.html', context)
+
+####deleting also has to be done on POST Request --> goto 2.
+
+2.  create product_delete.html : 
+
+{% extends 'base.html' %}
+{% block content %}
+
+<form action= '.' method="POST"> {% csrf_token %}
+	<h1>Do you really want to delete the product --> {{ object.title }} ?</h1>
+	<input type="submit" name="Submit" value='Yes'/>
+	<a href="../"> No, go back! </a>
+</form>
+
+{% endblock content%}
+
+3. Add to URL.py :
+import product delete view and add url...
+    path('products/<int:id>/delete/', product_delete_view, name='product-delete'),

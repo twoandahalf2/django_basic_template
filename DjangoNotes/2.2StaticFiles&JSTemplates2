@@ -1,0 +1,22 @@
+download the template that you like
+
+copy paste all of the static folders from the templates - js, css , etc to static folder inside src
+
+copy all of the htmls to src/templates folder
+
+add {% load static %} to the htmls 
+
+add {% static .... %} to all static element in the html code
+
+change the static folder in settings.py
+
+import os.path
+
+STATIC_URL = '/static/'
+STATIC_ROOT = ''
+STATICFILES_DIRS = ( os.path.join('static'), )
+
+
+done all working fine
+
+
